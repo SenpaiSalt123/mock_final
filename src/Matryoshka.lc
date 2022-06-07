@@ -1,0 +1,139 @@
+
+-------------------------------------------------------------------------------
+-- DO NOT MODIFY THIS SEGMENT
+-------------------------------------------------------------------------------
+
+let TODO   = \i g n o r e -> i g n o r e
+
+let TRUE  = \x y -> x
+let FALSE = \x y -> y
+let ITE   = \b x y -> b x y
+let NOT   = \b x y -> b y x
+
+let PAIR = \x y -> (\b -> b x y)
+let FST  = \p -> p TRUE
+let SND  = \p -> p FALSE
+
+let ZERO  = \f x -> x
+let ONE   = \f x -> f x
+let TWO   = \f x -> f (f x)
+let THREE = \f x -> f (f (f x))
+let FOUR  = \f x -> f (f (f (f x)))
+
+let INC   = \n -> \f x -> f (n f x)
+let ISZ   = \n -> n (\z -> FALSE) TRUE
+let SKIP1 = \f p -> PAIR TRUE (ITE (FST p) (f (SND p)) (SND p))
+let DEC   = \n   -> SND (n (SKIP1 INC) (PAIR FALSE ZERO))
+let SUB   = \n m -> m DEC n
+let LEQ   = \n m -> ISZ (SUB n m)
+
+let FIX   = \stp -> (\x -> stp (x x)) (\x -> stp (x x))
+
+-- | Matryoshka numbers
+let MZERO = PAIR FALSE FALSE     -- Zero
+let MSUCC = \n -> PAIR TRUE n    -- Successor
+
+let MONE   = MSUCC MZERO
+let MTWO   = MSUCC MONE
+let MTHREE = MSUCC MTWO
+let MFOUR  = MSUCC MTHREE
+
+-------------------------------------------------------------------------------
+-- Task 1: WRITE YOUR CODE HERE 
+-------------------------------------------------------------------------------
+
+-- 1.1: Is zero
+let MISZ        = TODO
+
+-- 1.2: Decrement
+let MDEC        = TODO
+
+-- 1.3: Convert from Church numeral
+let FROM_CHURCH = TODO
+
+-- 1.4: Convert to Church numeral
+let TO_CHURCH   = TODO
+
+-------------------------------------------------------------------------------
+-- TESTS (DO NOT MODIFY THIS SEGMENT)
+-------------------------------------------------------------------------------
+
+eval isz_zero:
+  MISZ MZERO
+  =~> TRUE
+  
+eval isz_one:
+  MISZ MONE
+  =~> FALSE
+
+eval isz_two:
+  MISZ MTWO
+  =~> FALSE  
+
+eval isz_three:
+  MISZ MTHREE
+  =~> FALSE  
+
+eval isz_four:
+  MISZ MFOUR
+  =~> FALSE
+
+eval dec_zero:
+  MDEC MZERO
+   =~> \b -> b FALSE FALSE
+
+eval dec_one:
+  MDEC MONE
+   =~> \b -> b FALSE FALSE
+
+eval dec_two:
+  MDEC MTWO
+  =~> \b -> b TRUE (\b -> b FALSE FALSE)
+
+eval dec_three:
+  MDEC MTHREE
+  =~> \b -> b TRUE (\b -> b TRUE (\b -> b FALSE FALSE))
+
+eval dec_four:
+  MDEC MFOUR
+  =~> \b -> b TRUE (\b -> b TRUE (\b -> b TRUE (\b -> b FALSE FALSE)))
+
+eval from_church_zero:
+  FROM_CHURCH ZERO
+  =~> \b -> b FALSE FALSE
+  
+eval from_church_one:
+  FROM_CHURCH ONE
+  =~> \b -> b TRUE (\b -> b FALSE FALSE)
+
+eval from_church_two:
+  FROM_CHURCH TWO
+  =~> \b -> b TRUE (\b -> b TRUE (\b -> b FALSE FALSE))
+
+eval from_church_three:
+  FROM_CHURCH THREE
+  =~> \b -> b TRUE (\b -> b TRUE (\b -> b TRUE (\b -> b FALSE FALSE)))
+
+eval from_church_four:
+  FROM_CHURCH FOUR
+  =~> \b -> b TRUE (\b -> b TRUE (\b -> b TRUE (\b -> b TRUE (\b -> b FALSE FALSE))))
+
+eval to_church_zero:
+  TO_CHURCH MZERO
+  =~> ZERO
+  
+eval to_church_one:
+  TO_CHURCH MONE
+  =~> ONE  
+
+eval to_church_two:
+  TO_CHURCH MTWO
+  =~> TWO  
+
+eval to_church_three:
+  TO_CHURCH MTHREE
+  =~> THREE  
+
+eval to_church_four:
+  TO_CHURCH MFOUR
+  =~> FOUR  
