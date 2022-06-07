@@ -462,5 +462,3 @@ computing x
 **Note:** although in a real lazy language like Haskell each thunk is evaluated *at most once*,
 in your solution you don't have to implement this kind of caching;
 instead you should evaluate a thunk as many times as it is used in the computation of the final value.
-#   m o c k _ f i n a l  
- 
